@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="mlo_onlymule" name="OnlyMule" description="Only Mule; just shift the produce, mister" author="thijso" version="002" date="2020-07-01" save="0">
+  <text language="7" name="OnlyMule" description="OnlyMule" author="Language"></text>
+  <text language="33" name="OnlyMule" description="OnlyMule" author="Language"></text>
+  <text language="34" name="OnlyMule" description="OnlyMule" author="Language"></text>
+  <text language="39" name="OnlyMule" description="OnlyMule" author="Language"></text>
+  <text language="44" name="OnlyMule" description="OnlyMule" author="Language"></text>
+  <text language="49" name="OnlyMule" description="OnlyMule" author="Language"></text>
+  <text language="55" name="OnlyMule" description="OnlyMule" author="Language"></text>
+  <text language="81" name="OnlyMule" description="OnlyMule" author="Language"></text>
+  <text language="82" name="OnlyMule" description="OnlyMule" author="Language"></text>
+  <text language="86" name="OnlyMule" description="OnlyMule" author="Language"></text>
+  <text language="88" name="OnlyMule" description="OnlyMule" author="Language"></text>
+</content>
