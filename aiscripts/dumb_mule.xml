@@ -289,10 +289,14 @@
           <create_trade_order name="$dropWare" object="this.object" tradeoffer="$buyOffer" amount="$cargoHauled" immediate="false" />
 
           <set_value name="$cargoVolume" exact="$cargoHauled * $ware.volume" />
+          <set_value name="$cargoPerc" exact="($cargoVolume / this.ship.cargo.capacity.all) * 100" />
+          <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                         text="'cargoPerc: ' + $cargoPerc" />
+          <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                         text="'ship cargo: ' + this.ship.cargo.capacity.all" />
           <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                          text="'moving ' + $cargoHauled + ' ' + $ware +
-                               ' (' + $cargoVolume + ' : ' +
-                               (($cargoVolume / this.ship.cargo.capacity.all) * 100) + '% filled) ' +
+                               ' (' + $cargoVolume + ' : ' + $cargoPerc + '% filled)' +
                                ' from ' + $srcStation.name +
                                ' to ' + $dstStation.name " />
 
