@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <mdscript name="mloDumbMule_Setup" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net/libraries/md.xsd">
   <cues>
-    <cue name="mDM_SettingUp" instantiate="true" version="014">
+    <cue name="mDM_setup" instantiate="true" version="021">
       <conditions>
         <event_cue_signalled cue="md.Setup.Start" />
       </conditions>
@@ -21,9 +21,8 @@
         <append_to_list name="global.$mdm_AllMulesCommandTags" exact="'DumbMule'" />
 
         <!-- keeping track of set trade wares on warehouses -->
-        <do_if value="not global.$mdm_trackingSet?">
-          <set_value name="global.$mdm_trackingSet?" exact="true" />
-
+        <do_if value="global.$mdm_trackingSet?" negate="true">
+          <set_value name="global.$mdm_trackingSet" exact="true" />
           <set_value name="global.$mdm_trackWarehousesSet" exact="[]" />
         </do_if>
 
@@ -31,19 +30,18 @@
       </actions>
     </cue>
 
-    <cue name="mDM_update_notif" version="014">
+    <cue name="mDM_update_notif" version="021">
       <conditions>
         <event_cue_signalled cue="md.Setup.Start" />
       </conditions>
       <actions>
-         <show_help duration="7s" custom="'Dumb Mule has been updated to version 014'"/>
+         <show_help duration="7s" custom="'Dumb Mule has been updated to version 021'"/>
       </actions>
       <!-- if a cue is running that has a version like sinceversion or older then the patch will be applied -->
-      <patch sinceversion="013">
+      <patch sinceversion="020">
         <!-- simple reset so the sub cue is called again. -->
         <reset_cue cue="this"/>
       </patch>
-
     </cue>
 
   </cues>
