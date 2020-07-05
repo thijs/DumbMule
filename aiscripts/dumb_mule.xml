@@ -38,10 +38,10 @@
         <input_param name="step" value="5" />
       </param>
 
-      <!-- <!-\- menu option: WareBasket List-\-> -->
-      <!-- <param name="specialWareBasket"    type="list" default="[]"
-           text="Wares (all by default)"       comment="Warebasket"> -->
-      <!--  <input_param name="type"     value="'ware'" /> -->
+      <!-- <!-\- menu option: WareBasket list-\-> -->
+      <!-- <param name="specialWareBasket" required="false" default="[]" -->
+      <!--        type="list" text="Wares (products by default)" comment="Warebasket"> -->
+      <!--  <input_param name="type" value="'ware'" /> -->
       <!--  <input_param name="cancarry" value="this.ship" /> -->
       <!-- </param> -->
 
@@ -133,6 +133,9 @@
       <do_if value="global.$mdm_trackWarehousesSet.indexof.{$initId}" negate="true">
 
         <set_value name="$wares" exact="[]" />
+        <!-- <set_value name="$wares" exact="$specialWareBasket.clone" /> -->
+        <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+        <!--                text="'wares from special: ' + $wares" /> -->
 
         <do_if value="$srcStation.products.count">
           <do_all exact="$srcStation.products.count" counter="$i">
