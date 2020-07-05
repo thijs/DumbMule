@@ -17,6 +17,10 @@
       <!-- menu option: Two-way Trade (Forces trading back and forth between the stations if used) -->
       <param name="twoWay" type="bool" default="true"
              text="Two-way trade" comment="Trades back and forth between stations" />
+      <!-- menu option: Include Energy Wares (Include energy cells if used) -->
+      <param name="allowCells" type="bool" default="false" text="Allow Energy Cells" comment="Also hauls energy cells" />
+      <!-- menu option: Include Food & Medical Wares (Include food and medical wares if used) -->
+      <param name="allowFoodMed" type="bool" default="false" text="Allow Food and Meds" comment="Also hauls food and meds" />
 
       <!-- menu option: Preferred percentage of cargo hold filled -->
       <param name="minPercCargo" required="false" default="60" type="number" text="Fill Cargo Percentage" comment="Minimum percentage to fill cargo hold.">
@@ -125,7 +129,7 @@
 
       <label name="initializeTradeOffers" />
 
-      <set_value name="$initId" exact="'021:' + $srcStation.idcode + '+' + $dstStation.idcode" />
+      <set_value name="$initId" exact="'022:' + $srcStation.idcode + '+' + $dstStation.idcode" />
       <do_if value="global.$mdm_trackWarehousesSet.indexof.{$initId}" negate="true">
 
         <set_value name="$wares" exact="[]" />
@@ -161,14 +165,14 @@
         <do_all exact="$wares.count" counter="$i">
           <set_value name="$ware" exact="$wares.{$i}" />
 
-          <!-- SKIP ENERGY CELLS, MED, AND FOOD -->
-          <do_if value="$ware.id == 'energycells'">
+          <!-- potentially skip energy cells, food, and meds -->
+          <do_if value="($ware.id == 'energycells') and (not $allowCells)">
             <continue/>
           </do_if>
-          <do_if value="$ware.id == 'foodrations'">
+          <do_if value="($ware.id == 'foodrations') and (not $allowFoodMed)">
             <continue/>
           </do_if>
-          <do_if value="$ware.id == 'medicalsupplies'">
+          <do_if value="($ware.id == 'medicalsupplies') and (not $allowFoodMed)">
             <continue/>
           </do_if>
 
@@ -225,8 +229,14 @@
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                        text="'scanning ware: ' + $addingWare + ' [' + $addingWare.id + ']'" />
 
-        <!-- SKIP ENERGY CELLS -->
-        <do_if value="$addingWare.id == 'energycells'">
+        <!-- potentially skip energy cells, food, and meds -->
+        <do_if value="($addingWare.id == 'energycells') and (not $allowCells)">
+          <continue/>
+        </do_if>
+        <do_if value="($addingWare.id == 'foodrations') and (not $allowFoodMed)">
+          <continue/>
+        </do_if>
+        <do_if value="($addingWare.id == 'medicalsupplies') and (not $allowFoodMed)">
           <continue/>
         </do_if>
 
@@ -599,8 +609,14 @@
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                        text="'scanning return ware: ' + $addingWare + ' [' + $addingWare.id + ']'" />
 
-        <!-- SKIP ENERGY CELLS -->
-        <do_if value="$addingWare.id == 'energycells'">
+        <!-- potentially skip energy cells, food, and meds -->
+        <do_if value="($addingWare.id == 'energycells') and (not $allowCells)">
+          <continue/>
+        </do_if>
+        <do_if value="($addingWare.id == 'foodrations') and (not $allowFoodMed)">
+          <continue/>
+        </do_if>
+        <do_if value="($addingWare.id == 'medicalsupplies') and (not $allowFoodMed)">
           <continue/>
         </do_if>
 
@@ -620,8 +636,14 @@
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                        text="'scanning return trade ware: '+$addingWare" />
 
-        <!-- SKIP ENERGY CELLS -->
-        <do_if value="$addingWare.id == 'energycells'">
+        <!-- potentially skip energy cells, food, and meds -->
+        <do_if value="($addingWare.id == 'energycells') and (not $allowCells)">
+          <continue/>
+        </do_if>
+        <do_if value="($addingWare.id == 'foodrations') and (not $allowFoodMed)">
+          <continue/>
+        </do_if>
+        <do_if value="($addingWare.id == 'medicalsupplies') and (not $allowFoodMed)">
           <continue/>
         </do_if>
 
