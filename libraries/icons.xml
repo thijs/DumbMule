@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <diff>
-  <!-- Dumb Mule Icon -->
+  <!-- Test Mule Icon -->
   <add sel="/icons">
-    <icon name="order_dumbmule"
+    <icon name="order_testmule"
 	  texture="assets\fx\gui\textures\order\order_traderoutine.tga" height="32" width="32">
     </icon>
   </add>

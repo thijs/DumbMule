@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<aiscript name="testmule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net\libraries\aiscripts.xsd" version="5">
+  <!-- Setup context menu order -->
+  <order id="TestMule" name="M6- Test Mule"
+         description="Testly ferries supplies between stations"
+         category="trade" infinite="true">
+    <params>
+      <!-- menu option: WareBasket list-->
+      <param name="specialWareBasket" required="false" default="[]"
+             type="list" text="Wares (products by default)" comment="Warebasket">
+       <input_param name="type" value="'ware'" />
+       <input_param name="cancarry" value="this.ship" />
+      </param>
+
+    </params>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true" />
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="AttackHandler" />
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler" />
+    <handler ref="InspectedHandler" />
+    <handler ref="FoundAbandonedHandler" />
+    <handler ref="ResupplyHandler" />
+    <handler ref="JobRemoveRequestHandler" />
+    <handler ref="TargetInvalidHandler" />
+  </interrupts>
+
+  <init>
+    <set_value name="$debugchance" exact="100" />
+    <set_value name="$object" exact="this.assignedcontrolled" />
+    <set_order_syncpoint_reached order="this.ship.order" />
+    <set_command_action commandaction="commandaction.searchingtrades" />
+    <do_if value="($sourceStation.owner == this.ship.owner)">
+      <set_object_commander object="this.ship" commander="$sourceStation" assignment="assignment.trade" />
+    </do_if>
+    <set_value name="$debugFileName" exact="this.ship.idcode + ' testmule-' + player.age" />
+  </init>
+
+  <attention min="unknown">
+    <actions>
+      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'TestMule'"
+                     text="'starting log file'" append="false" output="false" />
+    </actions>
+  </attention>
+</aiscript>

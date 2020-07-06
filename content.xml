@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<content id="mlo_dumbmule" name="DumbMule"
-         description="Dumb Mule; just shift the produce, mister. Based in large part on MSW Extended by Misunderstood Wookiee."
-         author="thijso" version="022" date="2020-07-05" save="0">
-  <text language="7" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="33" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="34" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="39" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="44" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="49" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="55" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="81" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="82" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="86" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="88" name="DumbMule" description="DumbMule" author="Language"></text>
+<content id="mlo_testmule" name="TestMule"
+         description="Test Mule; just shift the produce, mister. Based in large part on MSW Extended by Misunderstood Wookiee."
+         author="thijso" version="001" date="2020-07-05" save="0">
+  <text language="7" name="TestMule" description="TestMule" author="Language"></text>
+  <text language="33" name="TestMule" description="TestMule" author="Language"></text>
+  <text language="34" name="TestMule" description="TestMule" author="Language"></text>
+  <text language="39" name="TestMule" description="TestMule" author="Language"></text>
+  <text language="44" name="TestMule" description="TestMule" author="Language"></text>
+  <text language="49" name="TestMule" description="TestMule" author="Language"></text>
+  <text language="55" name="TestMule" description="TestMule" author="Language"></text>
+  <text language="81" name="TestMule" description="TestMule" author="Language"></text>
+  <text language="82" name="TestMule" description="TestMule" author="Language"></text>
+  <text language="86" name="TestMule" description="TestMule" author="Language"></text>
+  <text language="88" name="TestMule" description="TestMule" author="Language"></text>
 </content>
