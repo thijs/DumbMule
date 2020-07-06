@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <aiscript name="dumbmule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net\libraries\aiscripts.xsd" version="026">
+          xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net\libraries\aiscripts.xsd" version="027">
   <!-- Setup context menu order -->
   <order id="DumbMule" name="M5- Dumb Mule"
          description="Dumbly ferries supplies between stations"
@@ -61,16 +61,16 @@
     </requires>
   </order>
 
-  <interrupts>
-    <handler ref="AttackHandler" />
-    <handler ref="MissileLockHandler" />
-    <handler ref="ScannedHandler" />
-    <handler ref="InspectedHandler" />
-    <handler ref="FoundAbandonedHandler" />
-    <handler ref="ResupplyHandler" />
-    <handler ref="JobRemoveRequestHandler" />
-    <handler ref="TargetInvalidHandler" />
-  </interrupts>
+  <!-- <interrupts> -->
+  <!--   <handler ref="AttackHandler" /> -->
+  <!--   <handler ref="MissileLockHandler" /> -->
+  <!--   <handler ref="ScannedHandler" /> -->
+  <!--   <handler ref="InspectedHandler" /> -->
+  <!--   <handler ref="FoundAbandonedHandler" /> -->
+  <!--   <handler ref="ResupplyHandler" /> -->
+  <!--   <handler ref="JobRemoveRequestHandler" /> -->
+  <!--   <handler ref="TargetInvalidHandler" /> -->
+  <!-- </interrupts> -->
 
   <init>
     <set_value name="$debugchance" exact="100" />
@@ -137,9 +137,12 @@
       <set_value name="$srcStation" exact="$sourceStation" />
       <set_value name="$dstStation" exact="$targetStation" />
 
+      <set_value name="$cIter" exact="0" />
+      <set_value name="$dIter" exact="0" />
+      
       <label name="initializeTradeOffers" />
 
-      <set_value name="$initId" exact="'026:' + $srcStation.idcode + '+' + $dstStation.idcode" />
+      <set_value name="$initId" exact="'027:' + $srcStation.idcode + '+' + $dstStation.idcode" />
       <do_if value="global.$mdm_trackWarehousesSet.indexof.{$initId}" negate="true">
 
         <!-- <set_value name="$wares" exact="[]" /> -->
@@ -196,7 +199,9 @@
 
           <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                          text="'adding tradeOffer for: ' + $ware" />
+
           <wait min="10ms" max="100ms" />
+
           <add_tradeware object="$dstStation" ware="$ware"
                          allowbuy="true" allowsell="true" lockavgprice="false" />
 
@@ -225,10 +230,19 @@
 
       <label name="start" />
 
+      <set_value name="$isReturn" exact="false" />
+
       <set_value name="$wareBasket" exact="[]" />
 
       <!-- get existing trade offers from target -->
-      <wait min="10ms" max="100ms" />
+      <do_if value="$isReturn" negate="true">
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'wait A start...'" />
+        <wait min="10ms" max="100ms" />
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'wait A end...'" />
+      </do_if>
+
       <find_buy_offer buyer="$dstStation" result="$tradeOffers" multiple="true" excludeempty="false">
       </find_buy_offer>
 
@@ -298,7 +312,6 @@
                        text="'have %1 remaining cargo, removing...'.[this.ship.cargo.count]" />
 
         <do_if value="@this.ship.dock.container != $srcStation ">
-          <wait min="10ms" max="100ms" />
           <run_script name="'order.dock'" object="this.ship" result="$docked" >
             <param name="destination" value="$srcStation"/>
             <param name="trading" value="true" />
@@ -322,7 +335,6 @@
         <do_all exact="$cargoDumps.count" counter="$i">
           <set_value name="$dump" exact="$cargoDumps.{$i}" />
 
-          <wait min="10ms" max="100ms" />
           <add_cargo object="$srcStation" ware="$dump.{1}" exact="$dump.{2}" result="$dumped" />
           <remove_cargo object="this.ship" ware="$dump.{1}" exact="$dump.{2}" result="$removed" />
 
@@ -340,8 +352,6 @@
                        text="'  cargo is full:'" />
         <resume label="noTradesPossible" />
       </do_if>
-
-      <set_value name="$isReturn" exact="false" />
 
       <label name="returnTrades" />
       <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
@@ -456,7 +466,13 @@
         </do_else>
       </do_all>
 
-      <wait min="10ms" max="100ms" />
+      <!-- <do_if value="$isReturn"> -->
+      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                  text="'wait B start...'" /> -->
+      <!--   <wait min="10ms" max="100ms" comment="wait 10-100" /> -->
+      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                  text="'wait B end...'" /> -->
+      <!-- </do_if> -->
       
       <set_value name="$wareList" exact="[]" />
 
@@ -490,7 +506,15 @@
       <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
       <!--                text="'DD'" /> -->
 
-      <wait min="10ms" max="100ms" />
+      <do_if value="$isReturn" negate="true">
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'wait C start...'" />
+        <wait min="20ms" max="80ms" comment="wait 20-80" />
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'wait C end...'" />
+      </do_if>
+      
+      
       <find_sell_offer seller="$srcStation" result="$sellOffers" multiple="true" excludeempty="false">
       </find_sell_offer>
 
@@ -562,7 +586,13 @@
 
           <do_if value="$sellOffer.ware == $ware">
             <set_value name="$sellOfferFound" exact="true" />
-            <wait min="5ms" max="50ms" />
+
+            <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+            <!--                text="'wait E start...'" /> -->
+            <!-- <wait min="10ms" max="100ms" /> -->
+            <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+            <!--                text="'wait E end...'" /> -->
+            
             <create_trade_order name="$getWare" object="this.object" tradeoffer="$sellOffer"
                                 amount="$cargoHauled" immediate="false" />
 
@@ -595,7 +625,7 @@
                                ' from ' + $srcStation.name +
                                ' to ' + $dstStation.name " />
 
-          <wait min="10ms" max="100ms" />
+          <!-- <wait min="10ms" max="100ms" /> -->
           <write_to_logbook category="upkeep" title="'DumbMule: '+this.ship.knownname+' ( '+this.ship.idcode+' )'"
                             interaction="showonmap"
                             object="this.ship"
@@ -621,7 +651,7 @@
         <!-- <append_to_list name="$unloadTrades" exact="[$ware.name,$buyOffer,$cargoHauled]" /> -->
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                        text="'adding unloadTrade: %1 : %2 -> %3'.[$trade.{1},$trade.{2},$trade.{3}]" />
-        <wait min="10ms" max="100ms" />
+        <!-- <wait min="10ms" max="100ms" /> -->
         <create_trade_order name="$dropWare" object="this.object" tradeoffer="$trade.{2}"
                             amount="$trade.{3}" immediate="false" />
       </do_all>
@@ -671,7 +701,7 @@
           <!-- <wait min="1ms" max="5ms" /> -->
         </do_all>
 
-        <wait min="10ms" max="100ms" />
+        <!-- <wait min="10ms" max="100ms" /> -->
 
         <!-- trade wares -->
         <do_all exact="$srcStation.tradewares.count" counter="$cts">
@@ -695,13 +725,12 @@
 
       <!-- figure out what wares the source station actually wants -->
       <!-- <wait min="50ms" max="100ms" comment="Avoid performance peaks with find functions"/> -->
-      <wait min="10ms" max="100ms" />
+
       <find_buy_offer buyer="$dstStation" result="$needs" multiple="true" excludeempty="false">
       </find_buy_offer>
 
       <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                      text="'buyOffers count: ' + $needs.count" />
-
 
       <do_all exact="$needs.count" counter="$n">
         <set_value name="$trade" exact="$needs.{$n}" />
@@ -734,7 +763,15 @@
         </do_if>
       </do_all>
 
-      <wait min="10ms" max="100ms" />
+      <!-- <wait min="10ms" max="100ms" /> -->
+      <!-- <do_if value="$isReturn"> -->
+      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                  text="'wait D start...'" /> -->
+      <!--   <wait min="15ms" max="75ms" comment="wait 15-75" /> -->
+      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                  text="'wait D end...'" /> -->
+      <!-- </do_if> -->
+      
       
       <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                      text="'now going to do return trades...'" />
@@ -754,8 +791,10 @@
       <remove_value name="$dstStation" />
       <remove_value name="$wareBasket" />
 
+      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                     text="'starting end wait...'" />
 
-      <wait min="2min" max="5min" />
+      <wait min="3min" max="5min" />
       <label name="end" />
     </actions>
   </attention>
