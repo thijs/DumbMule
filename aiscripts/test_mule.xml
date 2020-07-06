@@ -13,6 +13,12 @@
        <input_param name="cancarry" value="this.ship" />
       </param>
 
+      <!-- menu option: Source Station (Define Source Station) -->
+      <param name="sourceStation" type="object" text="Source Station" comment="The source station">
+        <input_param name="class" value="[class.station]" />
+      </param>
+
+      
     </params>
     <requires>
       <match shiptype="shiptype.lasertower" negate="true" />
