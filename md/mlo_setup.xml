@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <mdscript name="mloDumbMule_Setup" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net/libraries/md.xsd">
   <cues>
-    <cue name="mDM_setup" instantiate="true" version="025">
+    <cue name="mDM_setup" instantiate="true" version="026">
       <conditions>
         <event_cue_signalled cue="md.Setup.Start" />
       </conditions>
@@ -30,15 +30,15 @@
       </actions>
     </cue>
 
-    <cue name="mDM_update_notif" version="025">
+    <cue name="mDM_update_notif" version="026">
       <conditions>
         <event_cue_signalled cue="md.Setup.Start" />
       </conditions>
       <actions>
-         <show_help duration="7s" custom="'Dumb Mule has been updated to version 025'"/>
+         <show_help duration="7s" custom="'Dumb Mule has been updated to version 026'"/>
       </actions>
       <!-- if a cue is running that has a version like sinceversion or older then the patch will be applied -->
-      <patch sinceversion="024">
+      <patch sinceversion="025">
         <!-- simple reset so the sub cue is called again. -->
         <reset_cue cue="this"/>
       </patch>
