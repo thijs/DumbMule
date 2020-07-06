@@ -38,12 +38,12 @@
         <input_param name="step" value="5" />
       </param>
 
-      <!-- menu option: WareBasket list-->
-      <param name="specialWareBasket" required="false" default="[]"
-             type="list" text="Wares (products by default)" comment="Warebasket">
-       <input_param name="type" value="'ware'" />
-       <input_param name="cancarry" value="this.ship" />
-      </param>
+      <!-- <!-\- menu option: WareBasket list-\-> -->
+      <!-- <param name="specialWareBasket" required="false" default="[]" -->
+      <!--        type="list" text="Wares (products by default)" comment="Warebasket"> -->
+      <!--  <input_param name="type" value="'ware'" /> -->
+      <!--  <input_param name="cancarry" value="this.ship" /> -->
+      <!-- </param> -->
 
     </params>
     <requires>
