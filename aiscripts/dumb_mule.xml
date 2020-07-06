@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <aiscript name="dumbmule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net\libraries\aiscripts.xsd" version="5">
+          xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net\libraries\aiscripts.xsd" version="025">
   <!-- Setup context menu order -->
   <order id="DumbMule" name="M5- Dumb Mule"
          description="Dumbly ferries supplies between stations"
          category="trade" infinite="true">
     <params>
+
+      <!-- menu option: WareBasket list-->
+      <!-- FOR SOME INSANE REASON IT BREAKS IF THIS IS NOT AT THE TOP -->
+      <param name="specialWareBasket" required="false" default="[]"
+             type="list" text="Wares (products by default)" comment="Warebasket">
+       <input_param name="type" value="'ware'" />
+       <input_param name="cancarry" value="this.ship" />
+			 <patch sinceversion="024" value="[]"/>
+      </param>
+
+      <!-- menu option: Only Selected Wares -->
+      <param name="onlySelected" type="bool" default="false"
+             text="Only Selected Wares" comment="Only haul selected wares">
+      	<patch sinceversion="024" value="false"/>
+      </param>
+
+      
       <!-- menu option: Source Station (Define Source Station) -->
       <param name="sourceStation" type="object" text="Source Station" comment="The source station">
         <input_param name="class" value="[class.station]" />
@@ -37,13 +54,6 @@
         <input_param name="max" value="100" />
         <input_param name="step" value="5" />
       </param>
-
-      <!-- <!-\- menu option: WareBasket list-\-> -->
-      <!-- <param name="specialWareBasket" required="false" default="[]" -->
-      <!--        type="list" text="Wares (products by default)" comment="Warebasket"> -->
-      <!--  <input_param name="type" value="'ware'" /> -->
-      <!--  <input_param name="cancarry" value="this.ship" /> -->
-      <!-- </param> -->
 
     </params>
     <requires>
@@ -92,34 +102,34 @@
         </do_all>
       </do_if>
 
-      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                     text="'  Source station : [' + $sourceStation.idcode + '] ' + $sourceStation.name" />
-      <do_if value="$sourceStation.resources.count">
-        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'    resources  : ' + $sourceStation.resources.list" />
-      </do_if>
-      <do_if value="$sourceStation.tradewares.count">
-        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'    tradewares  : ' + $sourceStation.tradewares.list" />
-      </do_if>
-      <do_if value="$sourceStation.products.count">
-        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'    products  : ' + $sourceStation.products.list" />
-      </do_if>
-      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                     text="'  Target station : [' + $targetStation.idcode + '] ' + $targetStation.name" />
-      <do_if value="$targetStation.resources.count">
-        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'    resources  : ' + $targetStation.resources.list" />
-      </do_if>
-      <do_if value="$targetStation.tradewares.count">
-        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'    tradewares  : ' + $targetStation.tradewares.list" />
-      </do_if>
-      <do_if value="$targetStation.products.count">
-        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'    products  : ' + $targetStation.products.list" />
-      </do_if>
+      <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                text="'  Source station : [' + $sourceStation.idcode + '] ' + $sourceStation.name" /> -->
+      <!-- <do_if value="$sourceStation.resources.count"> -->
+      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                  text="'    resources  : ' + $sourceStation.resources.list" /> -->
+      <!-- </do_if> -->
+      <!-- <do_if value="$sourceStation.tradewares.count"> -->
+      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                  text="'    tradewares  : ' + $sourceStation.tradewares.list" /> -->
+      <!-- </do_if> -->
+      <!-- <do_if value="$sourceStation.products.count"> -->
+      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                  text="'    products  : ' + $sourceStation.products.list" /> -->
+      <!-- </do_if> -->
+      <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                text="'  Target station : [' + $targetStation.idcode + '] ' + $targetStation.name" /> -->
+      <!-- <do_if value="$targetStation.resources.count"> -->
+      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                  text="'    resources  : ' + $targetStation.resources.list" /> -->
+      <!-- </do_if> -->
+      <!-- <do_if value="$targetStation.tradewares.count"> -->
+      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                  text="'    tradewares  : ' + $targetStation.tradewares.list" /> -->
+      <!-- </do_if> -->
+      <!-- <do_if value="$targetStation.products.count"> -->
+      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                  text="'    products  : ' + $targetStation.products.list" /> -->
+      <!-- </do_if> -->
       <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                      text="'---------------------------------------------------------------'" />
 
@@ -129,53 +139,58 @@
 
       <label name="initializeTradeOffers" />
 
-      <set_value name="$initId" exact="'022:' + $srcStation.idcode + '+' + $dstStation.idcode" />
+      <set_value name="$initId" exact="'025:' + $srcStation.idcode + '+' + $dstStation.idcode" />
       <do_if value="global.$mdm_trackWarehousesSet.indexof.{$initId}" negate="true">
 
-        <set_value name="$wares" exact="[]" />
-        <!-- <set_value name="$wares" exact="$specialWareBasket.clone" /> -->
+        <!-- <set_value name="$wares" exact="[]" /> -->
+        <set_value name="$wares" exact="$specialWareBasket.clone" />
         <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
         <!--                text="'wares from special: ' + $wares" /> -->
 
-        <do_if value="$srcStation.products.count">
-          <do_all exact="$srcStation.products.count" counter="$i">
-            <set_value name="$product" exact="$srcStation.products.{$i}" />
+        <do_if value="$onlySelected" negate="true">
+          <do_if value="$srcStation.products.count">
+            <do_all exact="$srcStation.products.count" counter="$i">
+              <set_value name="$product" exact="$srcStation.products.{$i}" />
 
-            <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                           text="'src product: ' + $product.id" />
+              <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+              <!--                text="'src product: ' + $product.id" /> -->
 
-            <do_if value="$wares.indexof.{$product}" negate="true">
-              <append_to_list name="$wares" exact="$product" />
-            </do_if>
-          </do_all>
-        </do_if>
-
-        <do_if value="$twoWay">
-          <do_if value="$srcStation.resources.count">
-            <do_all exact="$srcStation.resources.count" counter="$i">
-              <set_value name="$resource" exact="$srcStation.resources.{$i}" />
-
-              <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                             text="'src resource: ' + $resource.id" />
-
-              <do_if value="$wares.indexof.{$resource}" negate="true">
-                <append_to_list name="$wares" exact="$resource" />
+              <do_if value="$wares.indexof.{$product}" negate="true">
+                <append_to_list name="$wares" exact="$product" />
               </do_if>
             </do_all>
+          </do_if>
+
+          <do_if value="$twoWay">
+            <do_if value="$srcStation.resources.count">
+              <do_all exact="$srcStation.resources.count" counter="$i">
+                <set_value name="$resource" exact="$srcStation.resources.{$i}" />
+
+                <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+                <!--                text="'src resource: ' + $resource.id" /> -->
+
+                <do_if value="$wares.indexof.{$resource}" negate="true">
+                  <append_to_list name="$wares" exact="$resource" />
+                </do_if>
+              </do_all>
+            </do_if>
           </do_if>
         </do_if>
 
         <do_all exact="$wares.count" counter="$i">
           <set_value name="$ware" exact="$wares.{$i}" />
 
+          <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+          <!--                text="'1 -> DO WE SKIP? %1 : %2; allowCells:%3; allowFoodMed:%4; %5'.[(($ware.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$ware} le 0)),$ware.id,$allowCells,$allowFoodMed,$specialWareBasket.indexof.{$ware}]" /> -->
+
           <!-- potentially skip energy cells, food, and meds -->
-          <do_if value="($ware.id == 'energycells') and (not $allowCells)">
+          <do_if value="($ware.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$ware} le 0)">
             <continue/>
           </do_if>
-          <do_if value="($ware.id == 'foodrations') and (not $allowFoodMed)">
+          <do_if value="($ware.id == 'foodrations') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$ware} le 0)">
             <continue/>
           </do_if>
-          <do_if value="($ware.id == 'medicalsupplies') and (not $allowFoodMed)">
+          <do_if value="($ware.id == 'medicalsupplies') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$ware} le 0)">
             <continue/>
           </do_if>
 
@@ -212,7 +227,7 @@
       <set_value name="$wareBasket" exact="[]" />
 
       <!-- get existing trade offers from target -->
-      <wait min="10ms" max="100ms" comment="Avoid performance peaks with find functions" />
+      <!-- <wait min="10ms" max="100ms" comment="Avoid performance peaks with find functions" /> -->
       <find_buy_offer buyer="$dstStation" result="$tradeOffers" multiple="true" excludeempty="false">
       </find_buy_offer>
 
@@ -224,7 +239,7 @@
       <!--        </match_gate_distance> -->
       <!--      </match_buyer> -->
       <!-- </find_buy_offer> -->
-      <wait min="5ms" max="15ms" />
+      <!-- <wait min="5ms" max="15ms" /> -->
 
       <!-- product wares -->
       <do_all exact="$srcStation.products.count" counter="$cts">
@@ -232,16 +247,20 @@
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                        text="'scanning ware: ' + $addingWare + ' [' + $addingWare.id + ']'" />
 
+        <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+        <!--                text="'2 -> DO WE SKIP? %1 : %2; allowCells:%3; allowFoodMed:%4; %5'.[(($addingWare.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$addingWare} le 0)),$addingWare.id,$allowCells,$allowFoodMed,$specialWareBasket.indexof.{$addingWare}]" /> -->
+        
         <!-- potentially skip energy cells, food, and meds -->
-        <do_if value="($addingWare.id == 'energycells') and (not $allowCells)">
+        <do_if value="($addingWare.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$addingWare} le 0)">
           <continue/>
         </do_if>
-        <do_if value="($addingWare.id == 'foodrations') and (not $allowFoodMed)">
+        <do_if value="($addingWare.id == 'foodrations') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$addingWare} le 0)">
           <continue/>
         </do_if>
-        <do_if value="($addingWare.id == 'medicalsupplies') and (not $allowFoodMed)">
+        <do_if value="($addingWare.id == 'medicalsupplies') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$addingWare} le 0)">
           <continue/>
         </do_if>
+
 
         <do_if value="$wareBasket.indexof.{$addingWare}" negate="true">
 
@@ -249,8 +268,8 @@
           <do_all exact="$tradeOffers.count" counter="$n">
             <set_value name="$tradeOffer" exact="$tradeOffers.{$n}" />
 
-            <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                 text="'tradeOffer: ' + $tradeOffer + ' [' + $tradeOffer.ware.id + ']'" /> -->
+            <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+            <!--      text="'tradeOffer: ' + $tradeOffer + ' [' + $tradeOffer.ware.id + ']'" /> -->
 
             <do_if value="$addingWare == $tradeOffer.ware">
               <append_to_list name="$wareBasket" exact="$tradeOffer" />
@@ -261,7 +280,7 @@
           </do_all>
 
         </do_if>
-        <wait min="1ms" max="5ms" />
+        <!-- <wait min="1ms" max="5ms" /> -->
       </do_all>
 
       <!--create new list of wares, so we can shuffle it (randomize), not shuffling $wareBasket, because param-->
@@ -275,7 +294,7 @@
       <!-- first empty out cargo, if not 0 -->
       <do_if value="this.ship.cargo.count > 0">
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'have remaining cargo, removing...'" />
+                       text="'have %1 remaining cargo, removing...'.[this.ship.cargo.count]" />
 
         <do_if value="@this.ship.dock.container != $srcStation ">
           <run_script name="'order.dock'" object="this.ship" result="$docked" >
@@ -284,17 +303,33 @@
           </run_script>
         </do_if>
 
+        <!-- list to store the dump trades -->
+        <set_value name="$cargoDumps" exact="[]" />
+        
         <!-- drop off cargo -->
         <do_all exact="this.ship.cargo.count" counter="$i">
           <set_value name="$cargo" exact="this.ship.cargo.{$i}" />
           <set_value name="$amount" exact="this.ship.cargo.{$cargo}.count" />
 
-          <add_cargo object="$srcStation" ware="$cargo" exact="$amount" result="$dumped" />
-          <remove_cargo object="this.ship" ware="$cargo" exact="$amount" result="$removed" />
+          <append_to_list name="$cargoDumps" exact="[$cargo,$amount]" />
+        </do_all>
+
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'dumping cargo at %1 [%2]'.[$srcStation.name,$srcStation.idcode]" />
+        
+        <do_all exact="$cargoDumps.count" counter="$i">
+          <set_value name="$dump" exact="$cargoDumps.{$i}" />
+
+          <add_cargo object="$srcStation" ware="$dump.{1}" exact="$dump.{2}" result="$dumped" />
+          <remove_cargo object="this.ship" ware="$dump.{1}" exact="$dump.{2}" result="$removed" />
 
           <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                         text="'dumped cargo ' + $cargo + ': ' + $amount" />
+                         text="'dumped cargo %1 : %2'.[$dump.{1},$dump.{2}]" />
         </do_all>
+
+        <remove_value name="$cargoDumps" />
+        
+        <resume label="finish" />
       </do_if>
 
       <do_if value="this.ship.cargo.free.container lt (this.ship.cargo.capacity.container/10)">
@@ -340,12 +375,12 @@
         <append_to_list name="$srcProducts" exact="$srcStation.products.{$i}" />
       </do_all>
 
-      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                     text="'srcResources: ' + $srcResources" />
-      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                     text="'srcTradewares: ' + $srcTradewares" />
-      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                     text="'srcProducts: ' + $srcProducts" />
+      <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                text="'srcResources: ' + $srcResources" /> -->
+      <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                text="'srcTradewares: ' + $srcTradewares" /> -->
+      <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                text="'srcProducts: ' + $srcProducts" /> -->
 
 
       <!-- <set_value name="$shipLoadVol" exact="0" /> -->
@@ -489,10 +524,10 @@
         <set_value name="$stationWanted"
                    exact="$dstStation.cargo.{$ware}.target - $dstStation.cargo.{$ware}.count" />
         <set_value name="$cargoHauled" exact="[$cargoSpaceFreeForWare,$srcStation.cargo.{$ware}.count,$stationWanted].min" />
-        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'ware: ' + $ware + ' [' + $ware.id + ']; amount: ' + $cargoHauled" />
-        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'free cargo ware at station: ' + $dstStation.cargo.{$ware}.free" />
+        <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+        <!--                text="'ware: ' + $ware + ' [' + $ware.id + ']; amount: ' + $cargoHauled" /> -->
+        <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+        <!--                text="'free cargo ware at station: ' + $dstStation.cargo.{$ware}.free" /> -->
 
         <!-- on return, we shouldn't empty out the warehouse of resources -->
         <do_if value="$isReturn and ($srcResources.indexof.{$ware} gt 0)">
@@ -599,88 +634,58 @@
       <!-- rearrange src and dst -->
       <set_value name="$sourceWares" exact="$tradableWares" />
 
-      <set_value name="$potentialWares" exact="[]" />
+      <!-- <set_value name="$potentialWares" exact="[]" /> -->
+      <set_value name="$potentialWares" exact="$specialWareBasket.clone" />
       <set_value name="$tradableWares" exact="[]" />
 
+      <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                text="'potentialWares: %1'.[$potentialWares]" /> -->
+      
       <set_value name="$srcStation" exact="$targetStation" />
       <set_value name="$dstStation" exact="$sourceStation" />
 
+      <do_if value="$onlySelected" negate="true">
 
-      <!-- product wares -->
-      <do_all exact="$srcStation.products.count" counter="$cts">
-        <set_value name="$addingWare" exact="$srcStation.products.{$cts}" />
-        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'scanning return ware: ' + $addingWare + ' [' + $addingWare.id + ']'" />
+        <!-- product wares -->
+        <do_all exact="$srcStation.products.count" counter="$cts">
+          <set_value name="$addingWare" exact="$srcStation.products.{$cts}" />
+          <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                         text="'scanning return ware: ' + $addingWare + ' [' + $addingWare.id + ']'" />
 
-        <!-- potentially skip energy cells, food, and meds -->
-        <do_if value="($addingWare.id == 'energycells') and (not $allowCells)">
-          <continue/>
-        </do_if>
-        <do_if value="($addingWare.id == 'foodrations') and (not $allowFoodMed)">
-          <continue/>
-        </do_if>
-        <do_if value="($addingWare.id == 'medicalsupplies') and (not $allowFoodMed)">
-          <continue/>
-        </do_if>
+          <do_if value="$potentialWares.indexof.{$addingWare}" negate="true">
+            <!-- <do_if value="$sourceWares.indexof.{$addingWare}" negate="true"> <!-\- skip wares we just brought here -\-> -->
+              <append_to_list name="$potentialWares" exact="$addingWare" />
+              <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                             text="'adding return ware ' + $addingWare + ' to potential basket'" />
+            </do_if>
+          <!-- </do_if> -->
+          <!-- <wait min="1ms" max="5ms" /> -->
+        </do_all>
 
-        <do_if value="$potentialWares.indexof.{$addingWare}" negate="true">
-          <do_if value="$sourceWares.indexof.{$addingWare}" negate="true"> <!-- skip wares we just brought here -->
-            <append_to_list name="$potentialWares" exact="$addingWare" />
-            <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-            <!--                text="'adding return ware ' + $addingWare + ' to potential basket'" /> -->
-          </do_if>
-        </do_if>
-        <wait min="1ms" max="5ms" />
-      </do_all>
+        <!-- trade wares -->
+        <do_all exact="$srcStation.tradewares.count" counter="$cts">
+          <set_value name="$addingWare" exact="$srcStation.tradewares.{$cts}" />
+          <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                         text="'scanning return trade ware: '+$addingWare" />
 
-      <!-- trade wares -->
-      <do_all exact="$srcStation.tradewares.count" counter="$cts">
-        <set_value name="$addingWare" exact="$srcStation.tradewares.{$cts}" />
-        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="'scanning return trade ware: '+$addingWare" />
+          <do_if value="$potentialWares.indexof.{$addingWare}" negate="true">
+            <!-- <do_if value="$sourceWares.indexof.{$addingWare}" negate="true"> <!-\- skip wares we just brought here -\-> -->
+              <append_to_list name="$potentialWares" exact="$addingWare" />
+              <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                             text="'adding return trade ware '+$addingWare+' to potential basket'" />
+            </do_if>
+          <!-- </do_if> -->
+          <!-- <wait min="1ms" max="5ms" /> -->
+        </do_all>
+      </do_if>
 
-        <!-- potentially skip energy cells, food, and meds -->
-        <do_if value="($addingWare.id == 'energycells') and (not $allowCells)">
-          <continue/>
-        </do_if>
-        <do_if value="($addingWare.id == 'foodrations') and (not $allowFoodMed)">
-          <continue/>
-        </do_if>
-        <do_if value="($addingWare.id == 'medicalsupplies') and (not $allowFoodMed)">
-          <continue/>
-        </do_if>
-
-        <do_if value="$potentialWares.indexof.{$addingWare}" negate="true">
-          <do_if value="$sourceWares.indexof.{$addingWare}" negate="true"> <!-- skip wares we just brought here -->
-            <append_to_list name="$potentialWares" exact="$addingWare" />
-            <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-            <!--                text="'adding return trade ware '+$addingWare+' to potential basket'" /> -->
-          </do_if>
-        </do_if>
-        <!-- <wait min="1ms" max="5ms" /> -->
-      </do_all>
-
-      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                     text="'find buyOffers'" />
+      <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+      <!--                text="'find buyOffers'" /> -->
 
       <!-- figure out what wares the source station actually wants -->
       <!-- <wait min="50ms" max="100ms" comment="Avoid performance peaks with find functions"/> -->
-      <!-- <find_buy_offer tradepartner="this.ship" buyer="$dstStation" result="$needs" multiple="true"> -->
-      <!--   <amount min="1" /> -->
-      <!-- </find_buy_offer> -->
-      <!-- <wait min="10ms" max="100ms" comment="Avoid performance peaks with find functions" /> -->
-
       <find_buy_offer buyer="$dstStation" result="$needs" multiple="true" excludeempty="false">
       </find_buy_offer>
-
-      <!-- <find_buy_offer tradepartner="this.ship" buyer="$dstStation" result="$needs" -->
-      <!--                 excludeempty="false" multiple="true"> -->
-      <!--   <match_buyer> -->
-      <!--     <match_gate_distance object="$srcStation" min="0"> -->
-      <!--       <blacklist group="blacklistgroup.civilian" object="this.ship" /> -->
-      <!--     </match_gate_distance> -->
-      <!--   </match_buyer> -->
-      <!-- </find_buy_offer> -->
 
       <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                      text="'buyOffers count: ' + $needs.count" />
@@ -688,14 +693,32 @@
 
       <do_all exact="$needs.count" counter="$n">
         <set_value name="$trade" exact="$needs.{$n}" />
+        <set_value name="$wr" exact="$trade.ware" />
 
         <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
         <!--                text="'trade in needs: ' + $trade + ' : ' + $trade.ware" /> -->
 
-        <do_if value="$potentialWares.indexof.{$trade.ware}">
-          <append_to_list name="$tradableWares" exact="$trade" />
-          <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-          <!--                text="'adding return trade for '+$trade.ware+' to basket'" /> -->
+        <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+        <!--                text="'3 -> DO WE SKIP? %1 : %2; allowCells:%3; allowFoodMed:%4; %5'.[(($wr.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$wr} le 0)),$wr.id,$allowCells,$allowFoodMed,$specialWareBasket.indexof.{$wr}]" /> -->
+        
+
+        <!-- potentially skip energy cells, food, and meds -->
+        <do_if value="($wr.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$wr} le 0)">
+          <continue/>
+        </do_if>
+        <do_if value="($wr.id == 'foodrations') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$wr} le 0)">
+          <continue/>
+        </do_if>
+        <do_if value="($wr.id == 'medicalsupplies') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$wr} le 0)">
+          <continue/>
+        </do_if>
+
+        <do_if value="$potentialWares.indexof.{$wr}">
+          <do_if value="$sourceWares.indexof.{$wr}" negate="true"> <!-- skip wares we just brought here -->
+            <append_to_list name="$tradableWares" exact="$trade" />
+            <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+            <!--                text="'adding return trade for '+$trade.ware+' to basket'" /> -->
+          </do_if>
         </do_if>
       </do_all>
 
@@ -718,7 +741,7 @@
       <remove_value name="$wareBasket" />
 
 
-      <wait min="3min" max="5min" />
+      <wait min="2min" max="5min" />
       <label name="end" />
     </actions>
   </attention>
