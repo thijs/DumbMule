@@ -19,7 +19,6 @@
       <!-- menu option: Only Selected Wares -->
       <param name="onlySelected" type="bool" default="false"
              text="Only Selected Wares" comment="Only haul selected wares">
-      	<patch sinceversion="024" value="false"/>
       </param>
 
       
@@ -235,9 +234,11 @@
       <set_value name="$wareBasket" exact="[]" />
       <set_value name="$checkWares" exact="$specialWareBasket.clone" />
 
-      <do_all exact="$srcStation.products.count" counter="$i">
-        <append_to_list name="$checkWares" exact="$srcStation.products.{$i}" />
-      </do_all>
+      <do_if value="$onlySelected" negate="true">
+        <do_all exact="$srcStation.products.count" counter="$i">
+          <append_to_list name="$checkWares" exact="$srcStation.products.{$i}" />
+        </do_all>
+      </do_if>
 
       <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                      text="'checkWares: ' + $checkWares" />
