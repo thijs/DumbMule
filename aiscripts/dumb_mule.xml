@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <aiscript name="dumbmule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net\libraries\aiscripts.xsd" version="028">
+          xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net\libraries\aiscripts.xsd" version="029">
   <!-- Setup context menu order -->
   <order id="DumbMule" name="M5- Dumb Mule"
          description="Dumbly ferries supplies between stations"
@@ -16,6 +16,14 @@
 			 <patch sinceversion="024" value="[]"/>
       </param>
 
+      <!-- menu option: return WareBasket list-->
+      <param name="returnWareBasket" required="false" default="[]"
+             type="list" text="Wares for return run" comment="Warebasket">
+       <input_param name="type" value="'ware'" />
+       <input_param name="cancarry" value="this.ship" />
+			 <patch sinceversion="027" value="[]"/>
+      </param>
+      
       <!-- menu option: Only Selected Wares -->
       <param name="onlySelected" type="bool" default="false"
              text="Only Selected Wares" comment="Only haul selected wares">
@@ -46,13 +54,13 @@
         <input_param name="step" value="5" />
       </param>
 
-      <!-- menu option: Preferred percentage of cargo hold filled -->
-      <param name="minResourcePerc" required="false" default="50" type="number" text="Keep Resource at Warehouse" comment="Minimum percentage for resources to keep at Warehouse.">
-        <input_param name="startvalue" value="50" />
-        <input_param name="min" value="0" />
-        <input_param name="max" value="100" />
-        <input_param name="step" value="5" />
-      </param>
+      <!-- <!-\- menu option: Keep percentage at warehouse -\-> -->
+      <!-- <param name="minResourcePerc" required="false" default="10" type="number" text="Keep Resource at Warehouse" comment="Minimum percentage for resources to keep at Warehouse."> -->
+      <!--   <input_param name="startvalue" value="10" /> -->
+      <!--   <input_param name="min" value="0" /> -->
+      <!--   <input_param name="max" value="100" /> -->
+      <!--   <input_param name="step" value="5" /> -->
+      <!-- </param> -->
 
     </params>
     <requires>
@@ -60,16 +68,16 @@
     </requires>
   </order>
 
-  <!-- <interrupts> -->
-  <!--   <handler ref="AttackHandler" /> -->
-  <!--   <handler ref="MissileLockHandler" /> -->
-  <!--   <handler ref="ScannedHandler" /> -->
-  <!--   <handler ref="InspectedHandler" /> -->
-  <!--   <handler ref="FoundAbandonedHandler" /> -->
-  <!--   <handler ref="ResupplyHandler" /> -->
-  <!--   <handler ref="JobRemoveRequestHandler" /> -->
-  <!--   <handler ref="TargetInvalidHandler" /> -->
-  <!-- </interrupts> -->
+  <interrupts>
+    <handler ref="AttackHandler" />
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler" />
+    <handler ref="InspectedHandler" />
+    <handler ref="FoundAbandonedHandler" />
+    <handler ref="ResupplyHandler" />
+    <handler ref="JobRemoveRequestHandler" />
+    <handler ref="TargetInvalidHandler" />
+  </interrupts>
 
   <init>
     <set_value name="$debugchance" exact="100" />
@@ -101,34 +109,34 @@
         </do_all>
       </do_if>
 
-      <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-      <!--                text="'  Source station : [' + $sourceStation.idcode + '] ' + $sourceStation.name" /> -->
-      <!-- <do_if value="$sourceStation.resources.count"> -->
-      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-      <!--                  text="'    resources  : ' + $sourceStation.resources.list" /> -->
-      <!-- </do_if> -->
-      <!-- <do_if value="$sourceStation.tradewares.count"> -->
-      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-      <!--                  text="'    tradewares  : ' + $sourceStation.tradewares.list" /> -->
-      <!-- </do_if> -->
-      <!-- <do_if value="$sourceStation.products.count"> -->
-      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-      <!--                  text="'    products  : ' + $sourceStation.products.list" /> -->
-      <!-- </do_if> -->
-      <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-      <!--                text="'  Target station : [' + $targetStation.idcode + '] ' + $targetStation.name" /> -->
-      <!-- <do_if value="$targetStation.resources.count"> -->
-      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-      <!--                  text="'    resources  : ' + $targetStation.resources.list" /> -->
-      <!-- </do_if> -->
-      <!-- <do_if value="$targetStation.tradewares.count"> -->
-      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-      <!--                  text="'    tradewares  : ' + $targetStation.tradewares.list" /> -->
-      <!-- </do_if> -->
-      <!-- <do_if value="$targetStation.products.count"> -->
-      <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-      <!--                  text="'    products  : ' + $targetStation.products.list" /> -->
-      <!-- </do_if> -->
+      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                     text="'  Source station : [' + $sourceStation.idcode + '] ' + $sourceStation.name" />
+      <do_if value="$sourceStation.resources.count">
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'    resources  : ' + $sourceStation.resources.list" />
+      </do_if>
+      <do_if value="$sourceStation.tradewares.count">
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'    tradewares  : ' + $sourceStation.tradewares.list" />
+      </do_if>
+      <do_if value="$sourceStation.products.count">
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'    products  : ' + $sourceStation.products.list" />
+      </do_if>
+      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                     text="'  Target station : [' + $targetStation.idcode + '] ' + $targetStation.name" />
+      <do_if value="$targetStation.resources.count">
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'    resources  : ' + $targetStation.resources.list" />
+      </do_if>
+      <do_if value="$targetStation.tradewares.count">
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'    tradewares  : ' + $targetStation.tradewares.list" />
+      </do_if>
+      <do_if value="$targetStation.products.count">
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                       text="'    products  : ' + $targetStation.products.list" />
+      </do_if>
       <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                      text="'---------------------------------------------------------------'" />
 
@@ -141,13 +149,24 @@
       
       <label name="initializeTradeOffers" />
 
-      <set_value name="$initId" exact="'028:' + $srcStation.idcode + '+' + $dstStation.idcode" />
+      <set_value name="$initId" exact="'029:' + $srcStation.idcode + '+' + $dstStation.idcode" />
       <do_if value="global.$mdm_trackWarehousesSet.indexof.{$initId}" negate="true">
 
         <!-- <set_value name="$wares" exact="[]" /> -->
         <set_value name="$wares" exact="$specialWareBasket.clone" />
         <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
         <!--                text="'wares from special: ' + $wares" /> -->
+
+        <do_all exact="$returnWareBasket.count" counter="$i">
+          <set_value name="$item" exact="$returnWareBasket.{$i}" />
+
+          <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                         text="'returnWarebastet item: ' + $item.id" />
+
+          <do_if value="$wares.indexof.{$item}" negate="true">
+            <append_to_list name="$wares" exact="$item" />
+          </do_if>
+        </do_all>
 
         <do_if value="$onlySelected" negate="true">
           <do_if value="$srcStation.products.count">
@@ -186,13 +205,13 @@
           <!--                text="'1 -> DO WE SKIP? %1 : %2; allowCells:%3; allowFoodMed:%4; %5'.[(($ware.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$ware} le 0)),$ware.id,$allowCells,$allowFoodMed,$specialWareBasket.indexof.{$ware}]" /> -->
 
           <!-- potentially skip energy cells, food, and meds -->
-          <do_if value="($ware.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$ware} le 0)">
+          <do_if value="($ware.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$ware} le 0) and ($returnWareBasket.indexof.{$ware} le 0)">
             <continue/>
           </do_if>
-          <do_if value="($ware.id == 'foodrations') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$ware} le 0)">
+          <do_if value="($ware.id == 'foodrations') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$ware} le 0) and ($returnWareBasket.indexof.{$ware} le 0)">
             <continue/>
           </do_if>
-          <do_if value="($ware.id == 'medicalsupplies') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$ware} le 0)">
+          <do_if value="($ware.id == 'medicalsupplies') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$ware} le 0) and ($returnWareBasket.indexof.{$ware} le 0)">
             <continue/>
           </do_if>
 
@@ -244,13 +263,13 @@
                      text="'checkWares: ' + $checkWares" />
       
       <!-- get existing trade offers from target -->
-      <do_if value="$isReturn" negate="true">
+      <!-- <do_if value="$isReturn" negate="true"> -->
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                        text="'wait A start...'" />
         <wait min="10ms" max="100ms" />
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                        text="'wait A end...'" />
-      </do_if>
+      <!-- </do_if> -->
 
       <find_buy_offer buyer="$dstStation" result="$tradeOffers" multiple="true" excludeempty="false">
       </find_buy_offer>
@@ -581,21 +600,22 @@
         <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
         <!--                text="'free cargo ware at station: ' + $dstStation.cargo.{$ware}.free" /> -->
 
-        <!-- on return, we shouldn't empty out the warehouse of resources -->
-        <do_if value="$isReturn and ($srcResources.indexof.{$ware} gt 0)">
-          <set_value name="$maxToGet"
-                     exact="$srcStation.cargo.{$ware}.count - (($srcStation.cargo.{$ware}.target * $minResourcePerc) / 100)" />
-          <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                         text="'resource available at warehouse: %1 (requested was %2)'.[$maxToGet,$cargoHauled]" />
+        
+        <!-- <!-\- on return, we shouldn't empty out the warehouse of resources -\->  WHY NOT? -->
+        <!-- <do_if value="$isReturn and ($srcResources.indexof.{$ware} gt 0)"> -->
+        <!--   <set_value name="$maxToGet" -->
+        <!--              exact="$srcStation.cargo.{$ware}.count - (($srcStation.cargo.{$ware}.target * $minResourcePerc) / 100)" /> -->
+        <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+        <!--                  text="'resource available at warehouse: %1 (requested was %2)'.[$maxToGet,$cargoHauled]" /> -->
 
-          <do_if value="$maxToGet le 0">
-            <!-- not enough available for trade, skip -->
-            <continue />
-          </do_if>
+        <!--   <do_if value="$maxToGet le 0"> -->
+        <!--     <!-\- not enough available for trade, skip -\-> -->
+        <!--     <continue /> -->
+        <!--   </do_if> -->
 
-          <set_value name="$cargoHauled" exact="[$cargoHauled,$maxToGet].min" />
+        <!--   <set_value name="$cargoHauled" exact="[$cargoHauled,$maxToGet].min" /> -->
 
-        </do_if>
+        <!-- </do_if> -->
 
 
         <set_value name="$sellOfferFound" exact="false" />
@@ -696,7 +716,7 @@
       <set_value name="$sourceWares" exact="$tradableWares" />
 
       <!-- <set_value name="$potentialWares" exact="[]" /> -->
-      <set_value name="$potentialWares" exact="$specialWareBasket.clone" />
+      <set_value name="$potentialWares" exact="$returnWareBasket.clone" />
       <set_value name="$tradableWares" exact="[]" />
 
       <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
@@ -766,13 +786,13 @@
         
 
         <!-- potentially skip energy cells, food, and meds -->
-        <do_if value="($wr.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$wr} le 0)">
+        <do_if value="($wr.id == 'energycells') and (not $allowCells) and ($returnWareBasket.indexof.{$wr} le 0)">
           <continue/>
         </do_if>
-        <do_if value="($wr.id == 'foodrations') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$wr} le 0)">
+        <do_if value="($wr.id == 'foodrations') and (not $allowFoodMed) and ($returnWareBasket.indexof.{$wr} le 0)">
           <continue/>
         </do_if>
-        <do_if value="($wr.id == 'medicalsupplies') and (not $allowFoodMed) and ($specialWareBasket.indexof.{$wr} le 0)">
+        <do_if value="($wr.id == 'medicalsupplies') and (not $allowFoodMed) and ($returnWareBasket.indexof.{$wr} le 0)">
           <continue/>
         </do_if>
 
