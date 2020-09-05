@@ -23,13 +23,13 @@
        <input_param name="cancarry" value="this.ship" />
 			 <patch sinceversion="027" value="[]"/>
       </param>
-      
+
       <!-- menu option: Only Selected Wares -->
       <param name="onlySelected" type="bool" default="false"
              text="Only Selected Wares" comment="Only haul selected wares">
       </param>
 
-      
+
       <!-- menu option: Source Station (Define Source Station) -->
       <param name="sourceStation" type="object" text="Source Station" comment="The source station">
         <input_param name="class" value="[class.station]" />
@@ -54,13 +54,13 @@
         <input_param name="step" value="5" />
       </param>
 
-      <!-- <!-\- menu option: Keep percentage at warehouse -\-> -->
-      <!-- <param name="minResourcePerc" required="false" default="10" type="number" text="Keep Resource at Warehouse" comment="Minimum percentage for resources to keep at Warehouse."> -->
-      <!--   <input_param name="startvalue" value="10" /> -->
-      <!--   <input_param name="min" value="0" /> -->
-      <!--   <input_param name="max" value="100" /> -->
-      <!--   <input_param name="step" value="5" /> -->
-      <!-- </param> -->
+      <!-- menu option: Keep x times hourly consumption of resource at warehouse -->
+      <param name="minResourceFactor" required="false" default="5" type="number" text="Keep Resource at Warehouse" comment="Keep x times hourly consumption of resources at Warehouse.">
+        <input_param name="startvalue" value="5" />
+        <input_param name="min" value="0" />
+        <input_param name="max" value="20" />
+        <input_param name="step" value="1" />
+      </param>
 
     </params>
     <requires>
@@ -137,8 +137,23 @@
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                        text="'    products  : ' + $targetStation.products.list" />
       </do_if>
+
+
+      <find_object_component groupname="$srcStationmodules" object="$sourceStation" checkoperational="true" class="class.module" multiple="true"/>
+      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                     text="' %s modules on %s %s %s'.[$srcStationmodules.count, $sourceStation.idcode, $sourceStation.knownname, $sourceStation]" />
+
+      <find_object_component groupname="$dstStationmodules" object="$targetStation" checkoperational="true" class="class.module" multiple="true"/>
+      <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                     text="' %s modules on %s %s %s'.[$dstStationmodules.count, $targetStation.idcode, $targetStation.knownname, $targetStation]" />
+
+
       <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                      text="'---------------------------------------------------------------'" />
+
+      <!-- predefine some things -->
+      <set_value name="$ProdConsumptions" exact="['Spacefuel Production',['energycells',300,'water',750,'wheat',600],'Silicon Wafer Production',['energycells',1800,'silicon',4800],'Maja Snail Production',['energycells',320,'water',800],'Spaceweed Production',['energycells',840,'spices',240,'swampplant',720],'Refined Metal Production',['energycells',2160,'ore',5760],'Plasma Conductor Production',['energycells',240,'graphene',384,'superfluidcoolant',560],'Smart Chip Production',['energycells',300,'siliconwafers',120],'Scanning Array Production',['energycells',360,'refinedmetals',600,'siliconwafers',360],'Sunrise Flower Production',['energycells',360,'water',960],'Antimatter Cell Production',['energycells',3000,'hydrogen',9600],'Teladianium Production',['energycells',1350,'ore',8400],'Meat Production',['energycells',320,'water',800],'Soja Bean Production',['energycells',360,'water',960],'Weapon Component Production',['energycells',120,'hullparts',40,'plasmaconductors',60],'Superfluid Coolant Production',['energycells',900,'helium',4800],'Turret Component Production',['energycells',120,'microchips',40,'quantumtubes',40,'scanningarrays',20],'Antimatter Converter Production',['advancedcomposites',240,'energycells',960,'microchips',360],'Shield Component Production',['energycells',210,'plasmaconductors',60,'quantumtubes',60],'Spice Production',['energycells',240,'water',480],'Quantum Tube Production',['energycells',200,'graphene',580,'superfluidcoolant',150],'Advanced Composite Production',['energycells',600,'graphene',960,'refinedmetals',960],'Microchip Production',['energycells',300,'siliconwafers',1200],'Swamp Plant Production',['energycells',320,'water',800],'Medical Supply Production',['energycells',480,'spices',360,'water',720,'wheat',264],'Engine Part Production',['antimattercells',320,'energycells',240,'refinedmetals',384],'Chelt Production',['energycells',400,'water',960],'Graphene Production',['energycells',1200,'methane',4800],'Missile Component Production',['advancedcomposites',8,'energycells',80,'hullparts',8],'Field Coil Production',['energycells',360,'plasmaconductors',240,'quantumtubes',258],'Water Production',['energycells',1800,'ice',9600],'Scruffin Production',['energycells',360,'water',960],'Maja Dust Production',['energycells',240,'majasnails',720,'spices',360],'Food Ration Production',['energycells',600,'meat',600,'spices',300,'wheat',600],'Claytronics Production',['antimattercells',400,'energycells',560,'microchips',640,'quantumtubes',400],'Hull Part Production',['energycells',320,'graphene',160,'refinedmetals',1120],'Drone Component Production',['energycells',180,'engineparts',60,'hullparts',60,'microchips',60,'scanningarrays',120],'Nostrop Oil Production',['energycells',480,'spices',240,'sunriseflowers',480,'water',480],'Wheat Production',['energycells',360,'water',960],'Advanced Electronics Production',['energycells',300,'microchips',220,'quantumtubes',100],'Soja Husk Production',['energycells',480,'majasnails',480,'sojabeans',480,'spices',240]]" />
+      <set_value name="$HabConsumptions" exact="['Paranid L Dome',['sojahusk',715,'medicalsupplies',675],'Paranid S Dome',['sojahusk',239,'medicalsupplies',225],'Teladi L Biome',['nostropoil',571,'medicalsupplies',676],'Teladi S Biome',['nostropoil',143,'medicalsupplies',169],'Split L Parlour',['cheltmeat',251,'scruffinfruits',351,'medicalsupplies',676],'Split S Parlour',['cheltmeat',63,'scruffinfruits',88,'medicalsupplies',169],'Argon M Habitat',['foodrations',563,'medicalsupplies',338],'Argon S Habitat',['foodrations',282,'medicalsupplies',169],'Argon L Habitat',['foodrations',1126,'medicalsupplies',676],'Split M Parlour',['cheltmeat',126,'scruffinfruits',176,'medicalsupplies',338],'Teladi M Biome',['nostropoil',286,'medicalsupplies',338],'Paranid M Dome',['sojahusk',477,'medicalsupplies',450]]" />
 
 
       <set_value name="$srcStation" exact="$sourceStation" />
@@ -146,7 +161,7 @@
 
       <set_value name="$cIter" exact="0" />
       <set_value name="$dIter" exact="0" />
-      
+
       <label name="initializeTradeOffers" />
 
       <set_value name="$initId" exact="'029:' + $srcStation.idcode + '+' + $dstStation.idcode" />
@@ -261,7 +276,7 @@
 
       <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                      text="'checkWares: ' + $checkWares" />
-      
+
       <!-- get existing trade offers from target -->
       <!-- <do_if value="$isReturn" negate="true"> -->
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
@@ -292,7 +307,7 @@
 
         <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
         <!--                text="'2 -> DO WE SKIP? %1 : %2; allowCells:%3; allowFoodMed:%4; %5'.[(($addingWare.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$addingWare} le 0)),$addingWare.id,$allowCells,$allowFoodMed,$specialWareBasket.indexof.{$addingWare}]" /> -->
-        
+
         <!-- potentially skip energy cells, food, and meds -->
         <do_if value="($addingWare.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$addingWare} le 0)">
           <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
@@ -313,7 +328,7 @@
         <do_if value="$wareBasket.indexof.{$addingWare}" negate="true">
 
           <set_value name="$tradeFound" exact="false" />
-          
+
           <!-- add it as a trade offer -->
           <do_all exact="$tradeOffers.count" counter="$n">
             <set_value name="$tradeOffer" exact="$tradeOffers.{$n}" />
@@ -361,7 +376,7 @@
 
         <!-- list to store the dump trades -->
         <set_value name="$cargoDumps" exact="[]" />
-        
+
         <!-- drop off cargo -->
         <do_all exact="this.ship.cargo.count" counter="$i">
           <set_value name="$cargo" exact="this.ship.cargo.{$i}" />
@@ -372,7 +387,7 @@
 
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                        text="'dumping cargo at %1 [%2]'.[$srcStation.name,$srcStation.idcode]" />
-        
+
         <do_all exact="$cargoDumps.count" counter="$i">
           <set_value name="$dump" exact="$cargoDumps.{$i}" />
 
@@ -384,7 +399,7 @@
         </do_all>
 
         <remove_value name="$cargoDumps" />
-        
+
         <resume label="finish" />
       </do_if>
 
@@ -416,6 +431,7 @@
       <set_value name="$srcResources" exact="[]" />
       <set_value name="$srcTradewares" exact="[]" />
       <set_value name="$srcProducts" exact="[]" />
+
 
       <do_all exact="$srcStation.resources.count" counter="$i">
         <append_to_list name="$srcResources" exact="$srcStation.resources.{$i}" />
@@ -514,7 +530,7 @@
       <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
       <!--                  text="'wait B end...'" /> -->
       <!-- </do_if> -->
-      
+
       <set_value name="$wareList" exact="[]" />
 
       <do_all exact="$prio1.count" counter="$p1">
@@ -554,8 +570,8 @@
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                        text="'wait C end...'" />
       </do_if>
-      
-      
+
+
       <find_sell_offer seller="$srcStation" result="$sellOffers" multiple="true" excludeempty="false">
       </find_sell_offer>
 
@@ -576,7 +592,7 @@
 
         <set_value name="$cargoSpaceFreeForWare" exact="(($shipRemainingVol * 98) / 100) / $ware.volume" />
         <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
-                       text="$ware + ' ship.cargo.free: ' + this.ship.cargo.{$ware}.free +
+                       text="$ware + ' (' + $ware.id + ') ship.cargo.free: ' + this.ship.cargo.{$ware}.free +
                              '; remainingVol: ' + $shipRemainingVol +
                              '; cargoSpaceFreeForWare: ' + $cargoSpaceFreeForWare +
                              '  :: srcStation.cargo.ware.count: ' + $srcStation.cargo.{$ware}.count +
@@ -600,22 +616,88 @@
         <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
         <!--                text="'free cargo ware at station: ' + $dstStation.cargo.{$ware}.free" /> -->
 
-        
-        <!-- <!-\- on return, we shouldn't empty out the warehouse of resources -\->  WHY NOT? -->
-        <!-- <do_if value="$isReturn and ($srcResources.indexof.{$ware} gt 0)"> -->
-        <!--   <set_value name="$maxToGet" -->
-        <!--              exact="$srcStation.cargo.{$ware}.count - (($srcStation.cargo.{$ware}.target * $minResourcePerc) / 100)" /> -->
-        <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
-        <!--                  text="'resource available at warehouse: %1 (requested was %2)'.[$maxToGet,$cargoHauled]" /> -->
+        <!-- we shouldn't empty out resources -->
+        <do_if value="$srcResources.indexof.{$ware} gt 0">
 
-        <!--   <do_if value="$maxToGet le 0"> -->
-        <!--     <!-\- not enough available for trade, skip -\-> -->
-        <!--     <continue /> -->
-        <!--   </do_if> -->
+          <set_value name="$stationmodules" exact="[]" />
+          <find_object_component groupname="$stationmodules" object="$srcStation" checkoperational="true" class="class.module" multiple="true"/>
+          <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                         text="' %s modules on %s %s %s'.[$stationmodules.count, $srcStation.idcode, $srcStation.knownname, $srcStation]" />
 
-        <!--   <set_value name="$cargoHauled" exact="[$cargoHauled,$maxToGet].min" /> -->
+          <set_value name="$ware_consumption" exact="0" />
 
-        <!-- </do_if> -->
+          <do_all exact="$stationmodules.count" counter="$ModuleCounter">
+            <do_if value="$stationmodules.{$ModuleCounter}.isclass.habitation">
+              <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+              <!--                text="' %s module: %s : %s'.[$stationmodules.{$ModuleCounter}, $stationmodules.{$ModuleCounter}.name, $stationmodules.{$ModuleCounter}.class]" /> -->
+
+              <set_value name="$modulename" exact="$stationmodules.{$ModuleCounter}.name" />
+              <set_value name="$mod_index" exact="$HabConsumptions.indexof.{$modulename}" />
+              <do_if value="$mod_index gt 0">
+                <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+                <!--                text="' %s at index %s = %s'.[$modulename,$mod_index,$HabConsumptions.{$mod_index+1}]" /> -->
+                <set_value name="$ware_name" exact="$ware.id" />
+                <set_value name="$ware_list" exact="$HabConsumptions.{$mod_index+1}" />
+                <set_value name="$ware_idx" exact="$ware_list.indexof.{$ware_name}" />
+
+                <do_if value="$ware_idx gt 0">
+                  <set_value name="$ware_consumption" operation="add" exact="$ware_list.{$ware_idx+1}" />
+
+                  <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+                  <!--                text="' %s at index %s (%s) = %s'.[$ware_name,$ware_idx,$ware_list,$ware_list.{$ware_idx+1}]" /> -->
+                  <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+                  <!--                text="' %s total consumption = %s'.[$ware_name,$ware_consumption]" /> -->
+                </do_if>
+              </do_if>
+              <!-- <set_value name="$ProductionVolume" operation="add" exact="$stationmodules.{$ModuleCounter}.productionvolume" /> -->
+              <!-- <set_value name="$ConsumptionVolume" operation="add" exact="$stationmodules.{$ModuleCounter}.consumptionvolume" /> -->
+            </do_if>
+            <do_if value="$stationmodules.{$ModuleCounter}.isclass.production">
+              <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+              <!--                text="' %s module: %s : %s'.[$stationmodules.{$ModuleCounter}, $stationmodules.{$ModuleCounter}.name, $stationmodules.{$ModuleCounter}.class]" /> -->
+
+              <set_value name="$modulename" exact="$stationmodules.{$ModuleCounter}.name" />
+              <set_value name="$mod_index" exact="$ProdConsumptions.indexof.{$modulename}" />
+              <do_if value="$mod_index gt 0">
+                <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+                <!--                text="' %s at index %s = %s'.[$modulename,$mod_index,$ProdConsumptions.{$mod_index+1}]" /> -->
+                <set_value name="$ware_name" exact="$ware.id" />
+                <set_value name="$ware_list" exact="$ProdConsumptions.{$mod_index+1}" />
+                <set_value name="$ware_idx" exact="$ware_list.indexof.{$ware_name}" />
+
+                <do_if value="$ware_idx gt 0">
+                  <set_value name="$ware_consumption" operation="add" exact="$ware_list.{$ware_idx+1}" />
+
+                  <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+                  <!--                text="' %s at index %s (%s) = %s'.[$ware_name,$ware_idx,$ware_list,$ware_list.{$ware_idx+1}]" /> -->
+                  <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
+                  <!--                text="' %s total consumption = %s'.[$ware_name,$ware_consumption]" /> -->
+
+                </do_if>
+              </do_if>
+              <!-- <set_value name="$ProductionVolume" operation="add" exact="$stationmodules.{$ModuleCounter}.productionvolume" /> -->
+              <!-- <set_value name="$ConsumptionVolume" operation="add" exact="$stationmodules.{$ModuleCounter}.consumptionvolume" /> -->
+            </do_if>
+          </do_all>
+
+          <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                         text="' total consumption = %s'.[$ware_consumption]" />
+
+          <set_value name="$maxToGet"
+                     exact="$srcStation.cargo.{$ware}.count - ($ware_consumption * $minResourceFactor)" />
+          <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
+                         text="'resource at station: getting %1 of %2 (requested was %3)'.[$maxToGet,$srcStation.cargo.{$ware}.count,$cargoHauled]" />
+
+          <remove_value name="$ware_consumption" />
+          <remove_value name="$stationmodules" />
+
+          <do_if value="$maxToGet le 0">
+            <!-- not enough available for trade, skip -->
+            <continue />
+          </do_if>
+
+          <set_value name="$cargoHauled" exact="[$cargoHauled,$maxToGet].min" />
+        </do_if>
 
 
         <set_value name="$sellOfferFound" exact="false" />
@@ -634,7 +716,7 @@
             <!-- <wait min="10ms" max="100ms" /> -->
             <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
             <!--                text="'wait E end...'" /> -->
-            
+
             <create_trade_order name="$getWare" object="this.object" tradeoffer="$sellOffer"
                                 amount="$cargoHauled" immediate="false" />
 
@@ -721,7 +803,7 @@
 
       <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
       <!--                text="'potentialWares: %1'.[$potentialWares]" /> -->
-      
+
       <set_value name="$srcStation" exact="$targetStation" />
       <set_value name="$dstStation" exact="$sourceStation" />
 
@@ -783,7 +865,7 @@
 
         <!-- <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
         <!--                text="'3 -> DO WE SKIP? %1 : %2; allowCells:%3; allowFoodMed:%4; %5'.[(($wr.id == 'energycells') and (not $allowCells) and ($specialWareBasket.indexof.{$wr} le 0)),$wr.id,$allowCells,$allowFoodMed,$specialWareBasket.indexof.{$wr}]" /> -->
-        
+
 
         <!-- potentially skip energy cells, food, and meds -->
         <do_if value="($wr.id == 'energycells') and (not $allowCells) and ($returnWareBasket.indexof.{$wr} le 0)">
@@ -813,8 +895,8 @@
       <!--   <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'" -->
       <!--                  text="'wait D end...'" /> -->
       <!-- </do_if> -->
-      
-      
+
+
       <debug_to_file chance="$debugchance" name="$debugFileName" directory="'DumbMule'"
                      text="'now going to do return trades...'" />
 
