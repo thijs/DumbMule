@@ -22,4 +22,10 @@ Setup is fairly simple. Select SimpleMule as your Mule type from the
 * **Select your source station**
 * **Select your target station**
 
-These two are mandatory (source and target station), the rest is optional.
+These two are mandatory (source and target station), the rest is
+optional.
+
+By default the SimpleMule should work for **products** to be moved
+from source to station, and **resources** that the source needs and
+that are available at the target will be moved back, as **two-way
+trade** is on by default.
