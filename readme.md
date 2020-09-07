@@ -29,3 +29,25 @@ By default the SimpleMule should work for **products** to be moved
 from source to station, and **resources** that the source needs and
 that are available at the target will be moved back, as **two-way
 trade** is on by default.
+
+The other opions are:
+
+* **Add / Remove Wares (products by default)**
+
+This option enables you to manually select wares that you want moved
+from source to target. If **Only Selected Wares** is enabled, only
+wares on this list will be moved from source to target, otherwise they
+are added to the list of products produced at the station.
+
+* **Add / Remove Wares for return run**
+
+This does the same as above, but for the wares to move from target
+back to source. This list is added (unless **Only Selected Wares** is
+enabled) to the list of resources the source wants and are available
+at the target.
+
+* **Only Selected Wares**
+
+See above.
+
+* 
