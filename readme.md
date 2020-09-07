@@ -1,6 +1,6 @@
-# SimpleMule
+# SimpleMule; an X4 Foundations MOD
 
-## Based on [Mules-and-Warehouses-Extended](https://github.com/Misunderstood-Wookiee/Mules-and-Warehouses-Extended)
+### Based on [Mules-and-Warehouses-Extended](https://github.com/Misunderstood-Wookiee/Mules-and-Warehouses-Extended)
 
 I use Mules-and-Warehouses-Extended (MWEx) in my own games. However, I
 found the setup for DistribMules and SupplyMules for a warehouse too
@@ -13,3 +13,6 @@ the station produces) from one station to another.
 
 Later I added support for two-way trade and selecting your own list of
 wares to transport.
+
+## Setup
+
