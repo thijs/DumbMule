@@ -47,16 +47,16 @@
       <param name="allowFoodMed" type="bool" default="false" text="Allow Food and Meds" comment="Also hauls food and meds" />
 
       <!-- menu option: Preferred percentage of cargo hold filled -->
-      <param name="minPercCargo" required="false" default="60" type="number" text="Fill Cargo Percentage" comment="Minimum percentage to fill cargo hold.">
-        <input_param name="startvalue" value="60" />
+      <param name="minPercCargo" required="false" default="80" type="number" text="Fill Cargo Percentage" comment="Minimum percentage to fill cargo hold.">
+        <input_param name="startvalue" value="80" />
         <input_param name="min" value="0" />
         <input_param name="max" value="100" />
         <input_param name="step" value="5" />
       </param>
 
       <!-- menu option: Keep x times hourly consumption of resource at target -->
-      <param name="minResourceFactor" required="false" default="5" type="number" text="Keep Resource at Target" comment="Keep x times hourly consumption of resources at Target.">
-        <input_param name="startvalue" value="5" />
+      <param name="minResourceFactor" required="false" default="1" type="number" text="Keep Resource at Target" comment="Keep x times hourly consumption of resources at Target.">
+        <input_param name="startvalue" value="1" />
         <input_param name="min" value="0" />
         <input_param name="max" value="20" />
         <input_param name="step" value="1" />

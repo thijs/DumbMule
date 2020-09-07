@@ -74,7 +74,7 @@ fill percentage.
 * **Keep Resource at Target**
 
 If a ware is also a resource at the target station, this setting will
-keep x times the hourly consumption of that ware a the target
+keep x times the hourly consumption of that ware at the target
 station. The example I run into most is stations that produce Food and
 have a habitat. The habitat needs food, so it's both a resource and a
 product for that station. With this setting set to 1, the SimpleMule
