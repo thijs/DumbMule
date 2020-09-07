@@ -16,3 +16,7 @@ wares to transport.
 
 ## Setup
 
+Setup is fairly simple. Select SimpleMule as your Mule type from the
+*default behaviour menu*.
+
+### Mandatory: select a source and a target station.
