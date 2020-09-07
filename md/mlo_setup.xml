@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<mdscript name="mloDumbMule_Setup" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net/libraries/md.xsd">
+<mdscript name="mloSimpleMule_Setup" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net/libraries/md.xsd">
   <cues>
-    <cue name="mDM_setup" instantiate="true" version="029">
+    <cue name="mDM_setup" instantiate="true" version="001">
       <conditions>
         <event_cue_signalled cue="md.Setup.Start" />
       </conditions>
@@ -18,7 +18,7 @@
           Combining with mods such as Subordinate Order Access https://www.nexusmods.com/x4foundations/mods/289
           it is possible to modify the orders of the Mules even after station assignment.
         -->
-        <append_to_list name="global.$mdm_AllMulesCommandTags" exact="'DumbMule'" />
+        <append_to_list name="global.$mdm_AllMulesCommandTags" exact="'SimpleMule'" />
 
         <!-- keeping track of set trade wares on warehouses -->
         <do_if value="global.$mdm_trackingSet?" negate="true">
@@ -30,15 +30,15 @@
       </actions>
     </cue>
 
-    <cue name="mDM_update_notif" version="029">
+    <cue name="mDM_update_notif" version="001">
       <conditions>
         <event_cue_signalled cue="md.Setup.Start" />
       </conditions>
       <actions>
-         <show_help duration="7s" custom="'Dumb Mule has been updated to version 029'"/>
+         <show_help duration="7s" custom="'Simple Mule has been updated to version 001'"/>
       </actions>
       <!-- if a cue is running that has a version like sinceversion or older then the patch will be applied -->
-      <patch sinceversion="028">
+      <patch sinceversion="001">
         <!-- simple reset so the sub cue is called again. -->
         <reset_cue cue="this"/>
       </patch>

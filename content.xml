@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<content id="mlo_dumbmule" name="DumbMule"
-         description="Dumb Mule; just shift the produce, mister. Based in large part on MSW Extended by Misunderstood Wookiee."
-         author="thijso" version="029" date="2020-09-04" save="0">
-  <text language="7" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="33" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="34" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="39" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="44" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="49" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="55" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="81" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="82" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="86" name="DumbMule" description="DumbMule" author="Language"></text>
-  <text language="88" name="DumbMule" description="DumbMule" author="Language"></text>
+<content id="mlo_simplemule" name="Simplemule"
+         description="Simple Mule; just shift the produce, mister. Based in large part on MSW Extended by Misunderstood Wookiee."
+         author="thijso" version="001" date="2020-09-07" save="0">
+  <text language="7" name="Simplemule" description="Simplemule" author="Language"></text>
+  <text language="33" name="Simplemule" description="Simplemule" author="Language"></text>
+  <text language="34" name="Simplemule" description="Simplemule" author="Language"></text>
+  <text language="39" name="Simplemule" description="Simplemule" author="Language"></text>
+  <text language="44" name="Simplemule" description="Simplemule" author="Language"></text>
+  <text language="49" name="Simplemule" description="Simplemule" author="Language"></text>
+  <text language="55" name="Simplemule" description="Simplemule" author="Language"></text>
+  <text language="81" name="Simplemule" description="Simplemule" author="Language"></text>
+  <text language="82" name="Simplemule" description="Simplemule" author="Language"></text>
+  <text language="86" name="Simplemule" description="Simplemule" author="Language"></text>
+  <text language="88" name="Simplemule" description="Simplemule" author="Language"></text>
 </content>
