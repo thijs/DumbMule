@@ -3,7 +3,7 @@
 ### Based on [Mules-and-Warehouses-Extended](https://github.com/Misunderstood-Wookiee/Mules-and-Warehouses-Extended)
 
 I use Mules-and-Warehouses-Extended (MWEx) in my own games. However, I
-found the setup for DistribMules and SupplyMules for a warehouse too
+found the setup for DistriMules and SupplyMules for a warehouse too
 complex and prone to errors. I had issues, for example, with Mules
 bringing wares from one station and then bringing it back again
 because two-way trade was enabled.
