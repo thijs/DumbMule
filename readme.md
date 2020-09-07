@@ -50,4 +50,33 @@ at the target.
 
 See above.
 
-* 
+* **Two-way trade**
+
+If enabled, the SimpleMule will also move stuff back from the target
+to the source. See above also.
+
+* **Allow Energy Cells**
+
+By default Energy Cells are excluded from being moved.
+
+* **Allow Food and Meds**
+
+By default Food and Meds are excluded from being moved.
+
+* **Fill Cargo Percentage**
+
+The percentage of the cargo hold where the SimpleMule stops looking
+for more trades. The SimpleMule will try to find more trades to load
+if the cargo fill percentage is lower than this setting, but it
+doesn't stop the cargo run. So this is the preferred minimum cargo
+fill percentage.
+
+* **Keep Resource at Target**
+
+If a ware is also a resource at the target station, this setting will
+keep x times the hourly consumption of that ware a the target
+station. The example I run into most is stations that produce Food and
+have a habitat. The habitat needs food, so it's both a resource and a
+product for that station. With this setting set to 1, the SimpleMule
+will always leave 1 hour's worth of Food at the target station. At 2,
+2 hour's worth. Etc.

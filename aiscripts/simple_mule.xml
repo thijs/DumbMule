@@ -54,8 +54,8 @@
         <input_param name="step" value="5" />
       </param>
 
-      <!-- menu option: Keep x times hourly consumption of resource at warehouse -->
-      <param name="minResourceFactor" required="false" default="5" type="number" text="Keep Resource at Warehouse" comment="Keep x times hourly consumption of resources at Warehouse.">
+      <!-- menu option: Keep x times hourly consumption of resource at target -->
+      <param name="minResourceFactor" required="false" default="5" type="number" text="Keep Resource at Target" comment="Keep x times hourly consumption of resources at Target.">
         <input_param name="startvalue" value="5" />
         <input_param name="min" value="0" />
         <input_param name="max" value="20" />
