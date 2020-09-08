@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <aiscript name="simplemule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net\libraries\aiscripts.xsd" version="029">
+          xsi:noNamespaceSchemaLocation="http://x4libonline.ddns.net\libraries\aiscripts.xsd" version="002">
   <!-- Setup context menu order -->
   <order id="SimpleMule" name="M5- Simple Mule"
          description="Simplely ferries supplies between stations"
@@ -13,7 +13,7 @@
              type="list" text="Wares (products by default)" comment="Warebasket">
        <input_param name="type" value="'ware'" />
        <input_param name="cancarry" value="this.ship" />
-			 <patch sinceversion="024" value="[]"/>
+			 <patch sinceversion="001" value="[]"/>
       </param>
 
       <!-- menu option: return WareBasket list-->
@@ -21,7 +21,7 @@
              type="list" text="Wares for return run" comment="Warebasket">
        <input_param name="type" value="'ware'" />
        <input_param name="cancarry" value="this.ship" />
-			 <patch sinceversion="027" value="[]"/>
+			 <patch sinceversion="001" value="[]"/>
       </param>
 
       <!-- menu option: Only Selected Wares -->
@@ -164,7 +164,7 @@
 
       <label name="initializeTradeOffers" />
 
-      <set_value name="$initId" exact="'029:' + $srcStation.idcode + '+' + $dstStation.idcode" />
+      <set_value name="$initId" exact="'002:' + $srcStation.idcode + '+' + $dstStation.idcode" />
       <do_if value="global.$mdm_trackWarehousesSet.indexof.{$initId}" negate="true">
 
         <!-- <set_value name="$wares" exact="[]" /> -->
@@ -183,7 +183,11 @@
           </do_if>
         </do_all>
 
-        <do_if value="$onlySelected" negate="true">
+        <debug_to_file chance="$debugchance" name="$debugFileName" directory="'SimpleMule'"
+                       text="'wares.count: ' + $wares.count" />
+        
+        <!-- <do_if value="$onlySelected" negate="true"> -->
+        <do_if value="($wares.count == 0) or (not $onlySelected)">
           <do_if value="$srcStation.products.count">
             <do_all exact="$srcStation.products.count" counter="$i">
               <set_value name="$product" exact="$srcStation.products.{$i}" />
@@ -268,7 +272,7 @@
       <set_value name="$wareBasket" exact="[]" />
       <set_value name="$checkWares" exact="$specialWareBasket.clone" />
 
-      <do_if value="$onlySelected" negate="true">
+      <do_if value="($checkWares.count == 0) or (not $onlySelected)">
         <do_all exact="$srcStation.products.count" counter="$i">
           <append_to_list name="$checkWares" exact="$srcStation.products.{$i}" />
         </do_all>
@@ -807,7 +811,7 @@
       <set_value name="$srcStation" exact="$targetStation" />
       <set_value name="$dstStation" exact="$sourceStation" />
 
-      <do_if value="$onlySelected" negate="true">
+      <do_if value="($potentialWares.count == 0) or (not $onlySelected)">
 
         <!-- product wares -->
         <do_all exact="$srcStation.products.count" counter="$cts">
